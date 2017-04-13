@@ -1,0 +1,9 @@
+/*
+* This is the main jape file.
+*
+*/
+
+MultiPhase:	OnCase
+Phases: 
+ConcreteCourtDetails
+AbstractCourtDetails

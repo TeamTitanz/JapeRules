@@ -1,0 +1,54 @@
+/*
+* Main Court Details are captured in this.
+* Written by :Vindula Jayawardana
+*
+*/
+
+Phase:ConcreteCourtDetails
+Input:  Lookup Token
+Options: control = applet
+
+Rule: USSupremeCourtSelector
+(
+	(
+		//United States Supreme Court
+	
+		//Following identifies the "United States Supreme Court"
+		{Token.string =~ "[Uu]nited"}  
+		{Token.string =~ "[Ss]tates"}  
+		{Token.string =~ "[Ss]upreme"}  
+		{Token.string =~ "[Cc]ourt"}  
+		|
+		//Following identifies the "Supreme Court of [the] United States"
+		{Token.string =~ "[Ss]upreme"}  
+		{Token.string =~ "[Cc]ourt"}
+		{Token.string =~ "[Oo]f"}  
+		({Token})?
+		{Token.string =~ "[Uu]nited"}  
+		{Token.string =~ "[Ss]tates"}
+	):ussc
+)  
+-->  
+ :ussc.US_Supreme_Court= {rule = "USSupreme"} 
+
+ 
+Rule: USCourtOfAppealsSelector
+(
+	(//United States Court of Appeals,First Circuit
+		(
+		{Token.string =~ "[Uu]nited"}  
+		{Token.string =~ "[Ss]tates"} 
+		{Token.string =~ "[Cc]ourt"}
+		{Token.string =~ "[Oo]f"}
+		{Token.string =~ "[Aa]ppeals"}
+		)
+		(
+		({Token.kind==punctuation})?
+		{Token.string =~ "[Ff]irst"}  
+		{Token.string =~ "[Cc]ircuit"}  
+		({Token.kind==punctuation})?
+		)?
+	):uscoa
+)
+-->  
+ :uscoa.US_Court_of_Appeals= {rule = "USCourtOfAppealsSelector"}

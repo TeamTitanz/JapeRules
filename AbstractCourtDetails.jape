@@ -1,0 +1,19 @@
+/*
+* Annotation  "Court" is added here
+* Written by :Vindula Jayawardana
+*
+*/
+
+Phase:AbstractCourtDetails
+Input: US_Supreme_Court US_Court_of_Appeals
+Options: control = applet
+
+Rule: CourtSelectorMain
+(
+ {US_Supreme_Court}
+ |
+ {US_Court_of_Appeals}
+)  
+:court
+-->  
+ :court.Court= {rule = "CourtSelectorMain"} 
