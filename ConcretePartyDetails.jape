@@ -1,5 +1,5 @@
 /*
-* Court Details are captured in this.
+* Two parties for the case is identified here.
 * Written by :Vindula Jayawardana
 *
 */
@@ -29,7 +29,7 @@ Rule: USSupremeCourtSelector
 	):ussc
 )  
 -->  
- :ussc.US_Supreme_Court= {rule = "USSupreme"} 
+ :ussc.US_Supreme_Court= {rule = "USSupremeCourtSelector"} 
 
  
 Rule: USCourtOfAppealsSelector

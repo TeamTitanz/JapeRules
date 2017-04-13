@@ -1,0 +1,36 @@
+/*
+* Two parties for the case is identified here.
+* Written by :Vindula Jayawardana
+*
+*/
+
+Phase:AbstractPartyDetails
+Input:  Lookup Token
+Options: control = appelt
+
+Rule: PartySelector
+(
+	(
+		(
+			{Token.kind==word, Token.category==NNP, Token.orth==allCaps}
+			|
+			{Token.kind==word, Token.category==NNP, Token.orth==upperInitial}
+		)
+		({Token})*
+	):party1
+	{Token.string =~ "[v]"}  
+	({Token.kind==punctuation})
+	(
+		(
+			{Token.kind==word, Token.category==NNP, Token.orth==allCaps}
+			|
+			{Token.kind==word, Token.category==NNP, Token.orth==upperInitial}
+		)
+		({Token})*
+		{Token.string =~ "[Nn]o"}  
+	):party2
+)  
+-->  
+ :party1.Party= {rule = "PartySelector"},
+ :party2.Party= {rule = "PartySelector"},
+ :party2.Gona= {rule = "PartySelector"}
