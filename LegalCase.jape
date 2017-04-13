@@ -1,15 +1,32 @@
+/*
+* This create a legal case annotation
+* Written by :Vindula Jayawardana
+*
+*/
+
 Phase:LegalCase
 Input:  Lookup Token Date
 Options: control = all 
 
 Rule: LegalCaseCreator
 (
+ (
  {Token.string =~ "[Ar]gued"} 
  ({Token.kind==punctuation}) 
  (
 	{Date.kind == "date"}
- ):argued	
+ ):argued
+ )
+ | 
+ (
+ {Token.string =~ "[Dd]ecided"} 
+ ({Token.kind==punctuation}) 
+ (
+	{Date.kind == "date"}
+ ):decided
+ )
 )
 -->
-:argued.TEST= {rule = "LegalCaseCreator"}
+ :argued.Argued_Date= {rule = "LegalCaseCreator"},
+ :decided.Decided_Date= {rule = "LegalCaseCreator"}
  
