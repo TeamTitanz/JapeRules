@@ -52,3 +52,19 @@ Rule: USCourtOfAppealsSelector
 )
 -->  
  :uscoa.US_Court_of_Appeals= {rule = "USCourtOfAppealsSelector"}
+ 
+ 
+ Rule: SupremeCourtOfFloridaSelector
+(
+//Supreme Court of Florida.
+	(
+	{Token.string =~ "[Ss]upreme"}  
+	{Token.string =~ "[Cc]ourt"}  
+	{Token.string =~ "[Oo]f"}
+	{Token.string =~ "[Ff]lorida"}
+	({Token.kind==punctuation})?
+	):scof
+)
+-->  
+ :scof.Supreme_Court_of_Florida= {rule = "SupremeCourtOfFloridaSelector"}
+
