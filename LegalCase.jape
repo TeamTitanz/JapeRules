@@ -1,0 +1,15 @@
+Phase:LegalCase
+Input:  Lookup Token Date
+Options: control = all 
+
+Rule: LegalCaseCreator
+(
+ {Token.string =~ "[Ar]gued"} 
+ ({Token.kind==punctuation}) 
+ (
+	{Date.kind == "date"}
+ ):argued	
+)
+-->
+:argued.TEST= {rule = "LegalCaseCreator"}
+ 
