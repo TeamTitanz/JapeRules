@@ -1,0 +1,238 @@
+Phase:Law
+Input:  Lookup Token Person Organization Money
+Options: control = first
+
+Rule: law
+(
+	{Token.string=="provides"}
+	{Token.string=="that"}
+	{Token.kind==punctuation, Token.string=="\""}
+	({Token})*
+	{Token.kind==punctuation, Token.string=="\""}
+):law  
+-->  
+ :law.Law= {description = "Law"}
+ 
+Rule: filedCase
+(
+	({Person} | {Organization})
+	{Token.string=="filed"}
+	({Token, Token.string!="."})*
+	{Token.string=="in"}
+	({Token, Token.string!="."})*
+	{Organization}
+	({Token})*
+	{Token.string=="."}
+):filedCase  
+-->  
+ :filedCase.Filed= {description = "court"}
+ 
+Rule: decisionGiven
+(
+	({Token.string=~"[Cc]ourt"}
+	|
+	{Token.string=~"[Ww]e"})
+	({Token.string=="granted"}
+	|
+	{Token.string=="entered"}
+	|
+	{Token.string=="returned"}
+	)
+	({Token, Token.string!="."})*
+	(({Token.string=="in"}
+	{Token.string=="favor"})
+	|
+	({Token.string=="against"})
+	)
+	({Organization}
+	|
+	{Person}
+	)
+):decisionGiven 
+-->  
+ :decisionGiven.Decision= {description = "Decision"}
+ 
+ 
+ Rule: erroredDecision
+(
+	{Token.string=~"[Cc]ourt"}
+	{Token.string=="erred"}
+	({Token, Token.string!="."})*
+	({Token.string=="granting"}
+	|
+	{Token.string=="approving"}
+	)
+	({Token})*
+	{Token.string=="."}
+):erroredDecision 
+-->  
+ :erroredDecision.ErredDecision= {description = "ErredDecision"}
+ 
+ 
+Rule: appealCourtDecision
+(
+	({Token.string=~"[Cc]ourt"}
+	|
+	{Token.string=~"[Ww]e"}
+	|
+	{Token.string=~"[Jj]udge"}
+	)
+	({Token, Token.string!=".", Token.string!=","})*
+	({Token.string=~"affirm.*"}
+	|
+	{Token.string=~"reverse.*"}
+	|
+	{Token.string=~"remand.*"}
+	|
+	{Token.string=~"agree.*"}
+	)
+	({Token})*
+	{Token.string=="."}
+):appealCourtDecision 
+-->  
+ :appealCourtDecision.AppealCoutDecision= {description = "AppealCoutDecision"}
+ 
+ Rule: violatedLaw
+(
+	((({Token.string=~"claim.*"} | {Token.string=="alleged"} | {Token.string=="argued"} | {Token.string=~"conclude.*"} | {Token.string=~"contend.*"})({Token, Token.string!="."})*({Token.string=~"violation.*"}{Token.string=="of"}))
+	|
+	(({Person} | {Token.category==NNP})({Token, Token.string!=".", Token.string!=","})*{Token.string=~"violate.*"})
+	)
+	({Token})*
+	{Token.string=="."}
+):violatedLaw 
+-->  
+ :violatedLaw.ViolatedLaw= {description = "ViolatedLaw"}
+ 
+Rule: judgement
+(
+	{Token.string=~"[Ww]e"}
+	({Token, Token.string!=".", Token.string!=","})*
+	({Token.string=~"conclude.*"}
+	|
+	{Token.string=~"hold.*"}
+	|
+	{Token.string=~"reject.*"}
+	|
+	{Token.string=~"deny.*"}
+	)
+	({Token, Token.string!=".", Token.string!=","})*
+	{Token.string=="that"}
+	({Token})*
+	{Token.string=="."}
+):judgement 
+-->  
+:judgement.Judgement= {description = "Judgement"}
+ 
+Rule: filedReason
+(
+	({Person} | {Organization})
+	({Token.string=="filed"} | {Token.string=="removed"})
+	({Token, Token.string!="."})*
+	({Token.string=="under"} | {Token.string=~"violat.*"}| {Token.string=~"rais.*"})
+	({Token})*
+	{Token.string=="."}
+):filedReason 
+-->  
+ :filedReason.FiledReason= {description = "FiledReason"}
+ 
+ Rule: filedMotionDismiss
+(
+	({Person} | {Organization})
+	{Token.string=="filed"}
+	({Token, Token.string!="."})*
+	({Token.string=="motion"}{Token.string=="to"}{Token.string=="dismiss"})
+	({Token})*
+	{Token.string=="."}
+):filedMotionDismiss 
+-->  
+ :filedMotionDismiss.MotionToDismiss= {description = "MotionToDismiss"}
+ 
+ Rule: summaryJudgement
+(
+	({Token.string=~"[Cc]ourt"}
+	|
+	{Token.string=~"[Ww]e"})
+	{Token.string=="granted"}
+	({Token, Token.string!="."})*
+	{Token.string=="summary"}
+	{Token.string=="judgment"}
+	({Token})*
+	{Token.string=="."}
+):summaryJudgement 
+-->  
+ :summaryJudgement.SummaryJudgement= {description = "SummaryJudgement"}
+ 
+Rule: argument
+(
+	({Person} | {Organization} | {Token.string=~"[Aa]ppell.*"})
+	{Token.string=~"argu.*"}
+	({Token})*
+	{Token.string=="."}
+):argument 
+-->  
+ :argument.Argument= {description = "Argument"}
+ 
+Rule: loanInterest
+(
+	({Person} | {Organization} | {Token.string=~"[Aa]ppell.*"})
+	({Token, Token.string!="."})*
+	({Token.string=~"paid"} | {Token.string=~"pay"})
+	({Token, Token.string!="."})*
+	({Token.string=~"interest"} | {Token.string=~"debt"})
+	({Token})*
+	{Token.string=="."}
+):loanInterest 
+-->  
+ :loanInterest.LoanInterest= {description = "LoanInterest"}
+ 
+ Rule: loan
+(
+	({Person} | {Organization} | {Token.string=~"[Aa]ppell.*"})
+	({Token, Token.string!="."})*
+	({Token.string=~"borrow.*"} | {Token.string=~"obtain.*"})
+	({Token, Token.string!="."})*
+	{Money}
+	({Token})*
+	{Token.string=="."}
+):loan 
+-->  
+ :loan.Loan= {description = "Loan"}
+ 
+Rule: judge
+(
+	({Person} | {Token.category==NNP, Token.orth==allCaps})
+	({Token, Token.string!="."})*
+	{Token.string=~"[Jj]udge.*"}
+):judge 
+-->  
+ :judge.Judge= {description = "Judge"}
+ 
+Rule: appellantlawyers
+(
+	{Token.string=="("}{Token.string=="Argued"}{Token.string==")"}
+	({Token})*
+	{Token.string=="for"}{Token.string=~"[Aa]ppellant.*"}
+):appellantlawyers 
+-->  
+ :appellantlawyers.AppellantLawyers= {description = "Lawyers"}
+ 
+ Rule: appelleelawyers
+(
+	({Token.string=="Argued"} | {Token.string=="ARGUED"})
+	({Token})*
+	{Token.string=="for"}{Token.string=~"[Aa]ppellee.*"}
+):appelleelawyers 
+-->  
+ :appelleelawyers.AppelleeLawyers= {description = "Lawyers"}
+ 
+ 
+ Rule: argument
+(
+	{Token.string=="arguing"}
+	{Token.string=="that"}
+	(({Token})*
+	{Token.kind==punctuation, Token.string=="."}):argument 
+)
+-->  
+ :argument.IntialArgument= {description = "argument"}

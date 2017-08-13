@@ -1,0 +1,42 @@
+filed/brought -> tokens -> in (done)
+
+alliged/alleging claims->tokens->punctuation(.)(done)
+
+noun(person, company etc) -> allerging/alleged/claimed -> token* -> noun
+
+//judgement
+jury/court -> tokens(may include verb such as returned entered, granted) -> in favor of/againsts (done)
+
+court/we/[Jj]udge -> token* -> affirm[ed]/reversed/remanded/agree -> token* -> noun(the judgement most of the cases) (done)
+
+//judgement/ argemunt
+noun/claimed/argued/conclud[ed]-> tokens* -> violate[s]/violation/breach[es/ed] -> Tokens -> law/statue/act/contract/policy/[Cc]ode (done)
+
+//judgement
+[Ww]e -> conclude/hold/reject[ed]/deny -> tokens* -> that (done)
+ 
+noun -> contend[s/ed]
+
+//filed or remove case under specific law
+nount -> tokens*-> verb(removed/filed) -> tokens* -> noun -> token* -> under/violated/raising -> tokens* -> nouns* (done)
+
+//motion of judgement/ motion to dismissal
+filed -> tokens* -> motion to dismiss (done)
+
+//summary judgement
+court -> granted/grant -> tokens* -> judgement (done)
+
+arguments
+noun -> argued -> tokens (done)
+
+
+//loan taking cases
+noun -> tokens* -> paid/pay -> interest
+to -> pay -> tokens* -> interest
+noun -> tokens* -> borrowed -> tokens* -> number with dollar(currency)
+
+
+
+
+
+

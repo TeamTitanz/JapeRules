@@ -1,0 +1,23 @@
+﻿http://caselaw.findlaw.com/il-supreme-court/1392870.html
+
+http://caselaw.findlaw.com/il-supreme-court/1476031.html
+
+http://caselaw.findlaw.com/us-3rd-circuit/1728487.html
+
+Plaintiff, Lucy Mydlach, filed a three-count complaint in the circuit court of Cook County against defendant, DaimlerChrysler Corporation, alleging claims under the Magnuson-Moss Warranty-Federal Trade Commission Improvement Act (Magnuson-Moss Act or Act) (15 U.S.C. § 2301 et seq. (1994)).
+
+Michael Avery and other named plaintiffs brought a class action in the circuit court of Williamson County against defendant, State Farm Mutual Automobile Insurance Company (State Farm).
+
+
+//alliged
+Representing a nearly nationwide class of State Farm policyholders, plaintiffs alleged claims sounding in breach of contract and statutory consumer fraud, in addition to a claim seeking declaratory and injunctive relief.
+
+alleging claims under the Magnuson-Moss Warranty-Federal Trade Commission Improvement Act (Magnuson-Moss Act or Act) (15 U.S.C. § 2301 et seq. (1994)).
+
+//judgement/ arguements
+The circuit court certified the class.   The breach of contract claim was tried before a jury, and the remaining claims received a simultaneous bench trial.   The jury returned a verdict in favor of plaintiffs on the breach of contract claim, and the circuit court entered judgment in favor of plaintiffs on the consumer fraud claim.   With regard to the third count, the circuit court granted declaratory relief but declined to grant injunctive relief.   The damages awarded to plaintiffs totaled $1,186,180,000
+
+In this case, plaintiffs have placed at issue the propriety of State Farm's uniform practice of specifying the use of non-OEM crash parts to repair its policyholders' car[s] in every instance in which such cheaper parts are available.  * * * Plaintiffs contend that this policy breaches State Farm's standard contract because it is not designed to restore policyholders' cars to their pre-loss condition by using parts of like kind and quality.   Plaintiffs further contend that this practice violates Illinois' consumer law because the practice itself and its economic ramifications constitute a violation of Illinois consumer statutes, which prohibit[ ] misrepresentations as to the ‘standard, quality, or grade’ of the goods and services provided under State Farm's policies.  [Citation.]  At trial, the Court and jury must resolve the classwide question of whether State Farm, by requiring the uniform use of non-OEM crash parts, and through the course of conduct it designed to conceal the true import of this practice from its policyholders, breached its contractual obligations and committed consumer fraud.
+
+
+

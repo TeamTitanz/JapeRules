@@ -1,0 +1,120 @@
+/*
+*
+   Copyright 2011 Gina Cook
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+   
+*  This file is designed to annotate authors, citations, document titles, publication dates etc
+*
+*  Gina, 17 Aug 2010
+* 
+*/
+
+
+Phase:   CaseLaw
+Input: Token Lookup Number Sentence Organization Person Split SpaceToken Date Sentence
+Options: control = all
+
+Macro: COURT
+(
+	{Organization contains {Token.string ==~ "[Cc]ourt"}}
+)
+
+Macro: STATUE_NUMBER(
+	{Token.string == "§"}
+	{Token.kind == "number"}
+)
+		  
+Rule: party
+(
+	{Organization}
+	{SpaceToken}
+	{Lookup.majorType == time}
+	{SpaceToken}
+	{Lookup.majorType == state}
+	{Split}
+	{SpaceToken}
+	{Token.string == "v"}
+	{Split}
+	{SpaceToken}
+	{Person}
+):orgName -->
+		   :orgName.Party = {rule = "BothParties"}
+
+Rule: court
+(
+	(COURT)
+):courtName -->
+		   :courtName.Court = {rule = "Court"}
+		 
+Rule: supreme_court
+(
+	{Organization contains {Token.string ==~ "[Ss]upreme"}}
+):supremeCourt -->
+		   :supremeCourt.SupremeCourt = {kind = "SupremeCourt"}
+		   
+Rule: appeal_court
+(
+	{Token.string == "[Cc]ourt"}
+	{Token.string == "of"}
+	{Token.string =~ "[Aa]ppeal.*"}
+):appealCourt -->
+		   :appealCourt.AppealCourt = {kind = "AppealCourt"}
+		   
+		   
+Rule: argued_date
+(
+	{Token.string == "Argued"}
+	{Token.string == ":"}
+	{SpaceToken}
+	({Date}):actualDate
+):arguedDate -->
+		   :actualDate.ArguedDate = {kind = "date"}
+		   
+Rule: decided_date
+(
+	{Token.string == "Decided"}
+	{Token.string == ":"}
+	{SpaceToken}
+	({Date}):acutalDate
+):arguedDate -->
+		   :acutalDate.DecidedDate = {kind = "date"}
+		   
+		   
+Rule: statue_number
+(
+	(STATUE_NUMBER)
+):statueNumber -->
+		   :statueNumber.StatueNumber = {kind = "number"}
+
+Rule: statue
+(
+	{Token.string == "provides"}
+	{SpaceToken}
+	{Token.string == "that"}
+	{SpaceToken}
+	{Token.kind == "punctuation"}
+	({Token}|{SpaceToken})+
+	{Token.kind == "punctuation"}
+):statue -->
+		   :statue.Statue = {kind = "description"}		
+
+Rule: appellantlawyers
+(
+	({Sentence contains {Person}})*
+	({Sentence})*
+	({Sentence contains {Token.string =~ "appellee.*"}})
+	
+):appellantlawyers 
+-->  
+ :appellantlawyers.AppellantLawyers= {description = "Lawyers"}		   
