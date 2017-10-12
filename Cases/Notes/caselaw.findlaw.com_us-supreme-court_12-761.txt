@@ -1,0 +1,9 @@
+Lanham Act->[act] unfair competition/advantage from misleading/false description/advertising
+
+FDCA->[act] misbranding food/drink
+
+judgment -> held/blah blah -> claim -> precluded
+
+act complement each other->FDCD(check how it is tagged) act complement
+
+act complement each other->act -> complement -> act

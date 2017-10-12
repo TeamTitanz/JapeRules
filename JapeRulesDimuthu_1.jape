@@ -92,6 +92,7 @@ Rule: appealCourtDecision
 -->  
  :appealCourtDecision.AppealCoutDecision= {description = "AppealCoutDecision"}
  
+ 
  Rule: violatedLaw
 (
 	((({Token.string=~"claim.*"} | {Token.string=="alleged"} | {Token.string=="argued"} | {Token.string=~"conclude.*"} | {Token.string=~"contend.*"})({Token, Token.string!="."})*({Token.string=~"violation.*"}{Token.string=="of"}))
@@ -162,6 +163,20 @@ Rule: filedReason
 ):summaryJudgement 
 -->  
  :summaryJudgement.SummaryJudgement= {description = "SummaryJudgement"}
+ 
+  Rule: certiorari
+(
+	({Token.string=~"[Cc]ourt"}
+	|
+	{Token.string=~"[Ww]e"})
+	{Token.string=="granted"}
+	({Token, Token.string!="."})*
+	{Token.string=="certiorari"}
+	({Token})*
+	{Token.string=="."}
+):certiorari 
+-->  
+ :certiorari.Certiorari= {description = "Certiorari"}
  
 Rule: argument
 (
@@ -236,3 +251,14 @@ Rule: appellantlawyers
 )
 -->  
  :argument.IntialArgument= {description = "argument"}
+ 
+ Rule: act
+(
+	({Token.string=~"[Aa]ct"})
+	({Token, Token.string!="."})*
+	({Token.category==VBZ})
+	({Token})*
+	{Token.string=="."}
+):act 
+-->  
+ :act.ActDescription= {description = "ActDescription"}

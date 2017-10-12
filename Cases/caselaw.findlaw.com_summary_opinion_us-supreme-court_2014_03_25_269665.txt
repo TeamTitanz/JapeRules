@@ -1,0 +1,11 @@
+Lexmark International, Inc. v. Static Control Components, Inc., 12-873
+In an action in which plaintiff, a toner cartridge seller, alleged that defendant, a maker and seller of components for the remanufacture of plaintiff's cartridges, infringed plaintiff's copyright by developing a microchip that mimicked plaintiff's which allowed defendant to refurbish plaintiff's cartridges, and defendant countersued claiming that plaintiff violated the Lanham Act by misrepresenting to consumers that they were legally bound by the Prebate terms and thus required to return the Prebate-labeled cartridge to plaintiff after a single use, and that it was illegal for remanufacturers to sell refurbished Prebate cartridges and, in particular, that it was illegal to use defendant's products to refurbish those cartridges, the Sixth Circuit's determination that defendant adequately pleaded the elements of a Lanham Act cause of action for false advertising is affirmed, where: 1) a cause of action under the Lanham Act extends to plaintiffs who fall within the zone of interests protected by that statute and whose injury was proximately caused by a violation of that statute; and 2) defendant comes within the class of plaintiffs authorized to sue under the Lanham Act because its alleged injuries, lost sales and damage to its business reputation, fall within the zone of interests protected by the Act, and defendant sufficiently alleged that its injuries were proximately caused by plaintiff's misrepresentations.
+
+Appellate Information
+Decided 03/25/2014
+Published 03/25/2014
+Judges
+SCALIA
+Court
+United States Supreme Court
+Counsel

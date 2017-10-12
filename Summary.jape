@@ -1,0 +1,235 @@
+Phase:   CaseLaw
+Input: Token Lookup Number Sentence Organization Person Split SpaceToken Date Sentence
+Options: control = all
+		   
+Rule: party
+(
+	({Token.category == NNP}({SpaceToken} | {Token.kind== punctuation} | ({Token.kind== punctuation}{SpaceToken})))+:appellantName
+	{Token.string == "v"}
+	{Split}
+	{SpaceToken}
+	({Token.category == NNP}({SpaceToken} | {Token.kind== punctuation} | ({Token.kind== punctuation}({SpaceToken} | {Token.kind== punctuation}))))+:appelleeName
+	{SpaceToken}
+	({Token.kind == number}{Token.kind == punctuation}{Token.kind == number}):caseNumber
+):partiesName -->
+		   :partiesName.Party = {rule = "BothParties"},
+		   :appellantName.Appellant = {rule = "Appellant"},
+		   :appelleeName.Appellee = {rule = "Appellee"},
+		   :caseNumber.CaseNumber = {rule = "CaseNumber"}
+		   
+Rule: judges
+(
+	{Token.string == "Judges", Sentence}
+	({Split}
+	(({Token.category == NNP, Token.string != "Court"}):judgesName))*
+):judges -->
+		   :judgesName.Judge = {rule = "Judges"}
+		   
+Rule: decided
+(
+	{Token.string == "Decided"}{SpaceToken}
+	({Date}):decidedDate
+	{Split}
+) -->
+		   :decidedDate.DecidedDate = {rule = "DecidedDate"}
+		   
+Rule: published
+(
+	{Token.string == "Published"}{SpaceToken}
+	({Date}):publishedDate
+	{Split}
+) -->
+		   :publishedDate.PublishedDate = {rule = "PublishedDate"}
+		   
+
+
+Rule: caseType
+(
+	{Token.string=~"[Ii]n"}
+	{SpaceToken}
+	({Token.string=="a"}{SpaceToken})*
+	{Token.string=="case"}{SpaceToken}({Token.string=="of"} | ({Token.string=="relating"}{SpaceToken}{Token.string=="to"}))
+	({SpaceToken}{Token})*:caseType
+	{Token.kind==punctuation}
+):case -->
+		   :caseType.CaseType = {rule = "CaseType"} 
+		   	   
+
+Rule: supportedby
+(
+	{Token.string=~"[Cc]ourt"}
+	{SpaceToken}
+	({Token.string=="held"} | {Token.string=="hold"})
+	{SpaceToken}
+	{Token.string=="that"}
+	({SpaceToken}{Token})*
+	{SpaceToken}
+	(({Token.category == NNP}
+	({SpaceToken} | {Token.kind == punctuation}))+
+	{Token.string == "v"}
+	{Split}
+	{SpaceToken}
+	({Token.category == NNP} | ({Token.category == NNP}))):supportedby
+)-->
+		   :supportedby.SupportedBy = {rule = "SupportedBy"}
+
+Rule: claimType_1
+(
+	{Token.string=~"[Cc]ourt"}
+	(({SpaceToken}{Token}) | {Token})*
+	{SpaceToken}
+	{Token.string=="proscribes"}
+	({SpaceToken}{Token})*:claimType
+	{Token.kind==punctuation}
+) -->
+		   :claimType.ClaimType = {rule = "ClaimType"}	
+
+
+Phase:   initialClaim1
+Input: Token Lookup Number Sentence Organization Person Split SpaceToken Date Sentence
+Options: control = first	
+	
+ Rule: initialClaim
+(
+	{Token.string=="claiming"}
+	(({Token})*({SpaceToken})*)*
+	({Token.string=~"violat"}
+	(({Token})*({SpaceToken})*)*
+	{Token.string=="right"}
+	(({Token})*({SpaceToken})*)*
+	({Token.string=="."} | ({Token.string==","}{SpaceToken}))):initialClaim
+) -->  
+	:initialClaim.InitialClaim= {description = "initialClaim"}
+
+	
+
+Phase:   initialClaim2
+Input: Token Lookup Number Sentence Organization Person Split SpaceToken Date Sentence
+Options: control = first	   
+		   
+ Rule: initialClaim
+(
+	{Token.string=="plaintiff"}
+	(({Token})*({SpaceToken})*)*
+	{Token.string=="alleged"}
+	(({Token})*({SpaceToken})*)*
+	{Token.string=="defendant"}
+	(({Token})*({SpaceToken})*)*
+	({Token.string=="infringed"}):claimType
+	((({Token})*({SpaceToken})*)*
+	({Token.string=="."} | ({Token.string==","}{SpaceToken}{Token.string=="and"}))):initialClaim
+) -->  
+	:initialClaim.IntialClaim= {description = "IntialClaim"},
+	:claimType.ClaimType = {description = "ClaimType"}
+	
+	
+ Rule: counterClaimBased
+(
+	{Token.string=="defendant"}
+	(({Token})*({SpaceToken})*)*
+	{Token.string=="countersued"}
+	(({Token})*({SpaceToken})*)*
+	{Token.string=="plaintiff"}
+	(({Token})*({SpaceToken})*)*
+	{Token.string=="violated"}
+	(({Token})*({SpaceToken})*)*
+	({Token.category==NNP}
+	(({Token})*({SpaceToken})*)*
+	{Token.string=~"[Aa]ct"}):act
+	((({Token})*({SpaceToken})*)*
+	({Token.string=="."} | ({Token.string==","}{SpaceToken}{Token.string=="and"}))):counterClaim
+) -->  
+		:act.CounterCliamAct= {description = "CounterCliamAct"},
+		:counterClaim.CounterCliam= {description = "CounterCliam"}
+		
+Rule: claimType_2
+(
+	{Token.string=="arising"}
+	(({Token})*({SpaceToken})*)*
+	{Token.string=="from"}
+	(((({Token})*({SpaceToken})*)*
+	{Token.string=="contract"}):claimType
+	(({Token})*({SpaceToken})*)*
+	({Token.string=="."} | ({Token.string==","}{SpaceToken}))):initialClaim
+) -->
+		   :claimType.ClaimType = {rule = "ClaimType"},		
+		   :initialClaim.InitialClaim = {rule = "InitialClaim"}
+		   
+Rule: caseType
+(
+	{Token.string=~"[Ii]n"}
+	{SpaceToken}
+	(({Token.string=="a"} | {Token.string=="an"}){SpaceToken})*
+	({Token.string=="case"} | {Token.string=="appeal"}){SpaceToken}({Token.string=="of"} | ({Token.string=="relating"}{SpaceToken}{Token.string=="to"}) | {Token.string=="in"} | {Token.string=="brought"}){SpaceToken}
+	(({Token})*({SpaceToken})*)*
+	({Token.string=="divorce"} | ({Token.string=="same-sex"}(({Token})*({SpaceToken})*)*{Token.string=~"couple"}) | ({Token.string=="enforce"}(({Token})*({SpaceToken})*)*{Token.string=="judgment"})
+	| ({Token.string=~"advertis"}(({Token})*({SpaceToken})*)*{Token.string=~"market"})):caseType
+):case -->
+		   :caseType.CaseType = {rule = "CaseType"} 
+
+ Rule: initialClaim_2
+(
+	({Token.string=="plaintiff"} | {Token.string=="defendant"} | {Token.category==NN})
+	(({Token})*({SpaceToken})*)*
+	({Token.string=="waived"}
+	(({Token})*({SpaceToken})*)*
+	({Token.string=="."} | ({Token.string==","}{SpaceToken}))):initialClaim
+) -->  
+	:initialClaim.IntialClaim= {description = "IntialClaim"}
+	
+Rule: initialClaim_3
+(
+	({Token.string=~"deceive"}
+	(({Token})*({SpaceToken})*)*
+	{Token.string=="consumers"}
+	(({Token})*({SpaceToken})*)*
+	({Token.string=="."} | ({Token.string==","}{SpaceToken}))):initialClaim
+) -->  
+	:initialClaim.IntialClaim= {description = "IntialClaim"}
+	
+
+Rule: judgment(
+	{Token.string=~"[Cc]ourt"}
+	(({Token})*({SpaceToken})*)*
+	({Token.string=="judgment"} | {Token.string=="decision"} | {Token.string=="order"})
+	(({Token})*({SpaceToken})*)*
+	({Token.string=="reversed"} | {Token.string=="affirmed"}):judgment
+	(({Token})*({SpaceToken})*)*
+	{Token.string=="where"}
+	((({Token})*({SpaceToken})*)*
+	({Token.string=="."} | ({Token.string==","}{SpaceToken}))):previousJudgment
+) -->  
+	:judgment.Judgment= {description = "Judgment"},
+	:previousJudgment.PreviousJudgment= {description = "PreviousJudgment"}
+
+Phase:   initialClaim3
+Input: Token Lookup Number Sentence Organization Person Split SpaceToken Date Sentence
+Options: control = first 	
+
+Rule: initialClaim
+(
+	({Token.string=~"refus"}
+	(({Token})*({SpaceToken})*)*
+	{Token.string=~"adop"}
+	(({Token})*({SpaceToken})*)*
+	({Token.string=="."} | ({Token.string==","}{SpaceToken}))):initialClaim
+) -->  
+	:initialClaim.IntialClaim= {description = "IntialClaim"}
+	
+ Rule: initialClaim_1
+(
+	({Token.string=~"alleged"}
+	(({Token})*({SpaceToken})*)*
+	{Token.string=~"decept"}
+	(({Token})*({SpaceToken})*)*
+	({Token.string=="."} | ({Token.string==","}{SpaceToken}))):initialClaim
+) -->  
+	:initialClaim.IntialClaim= {description = "IntialClaim"}
+
+ Rule: supportedLaws
+(
+	({Token.category==NNP}({Token})*({SpaceToken})*)*
+	({Token.string=~"[Aa]ct"} | {Token.string=~"[Cc]lause"} | {Token.string=~"[Ff]aith"})
+):supportedLaws 
+-->  
+ :supportedLaws.SupportedLaws= {description = "SupportedLaws"}	

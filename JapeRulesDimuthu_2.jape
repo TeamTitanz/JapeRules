@@ -27,7 +27,7 @@ Options: control = all
 
 Macro: COURT
 (
-	{Organization contains {Token.string ==~ "[Cc]ourt"}}
+	{Organization contains {Token.string ==~ "[Cc]ourt"}} | {Organization contains {Token.string ==~ "[Cc]ircuit"}}
 )
 
 Macro: STATUE_NUMBER(
@@ -62,6 +62,12 @@ Rule: supreme_court
 	{Organization contains {Token.string ==~ "[Ss]upreme"}}
 ):supremeCourt -->
 		   :supremeCourt.SupremeCourt = {kind = "SupremeCourt"}
+		   
+Rule: circuit_court
+(
+	{Organization contains {Token.string ==~ "[Cc]ircuit"}}
+):circuitCourt -->
+		   :circuitCourt.CircuitCourt = {kind = "CircuitCourt"}		   
 		   
 Rule: appeal_court
 (
